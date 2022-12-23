@@ -17,8 +17,17 @@ class AgendaController extends DialogAbstractController
         if (!$request->query('resource_user')) {
             abort(404);
         }
-        $availableTime = new AvailableTime();
-        return response()->json($availableTime->build($request));
+        $availableTime = new AvailableTime($request);
+        return response()->json($availableTime->build());
+    }
+
+    public function getOfficeHour(Request $request)
+    {
+        if (!$request->query('resource_user')) {
+            abort(404);
+        }
+        $officeHour = new AvailableTime($request);
+        return response()->json($officeHour->getOfficeHour());
     }
 
 

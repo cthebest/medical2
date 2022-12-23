@@ -6,6 +6,7 @@ import EditOfficeHour from "../organism/agenda/Edit-Office-Hour.svelte";
 import AppointmentModal from "../organism/appointment/AppointmentModal.svelte";
 import MonthView from "../organism/agenda/calendar/MonthView.svelte";
 import AppointmentConfigurationModal from "../organism/appointment/AppointmentConfigurationModal.svelte";
+import DayView from "../organism/agenda/calendar/DayView.svelte";
 
 export const modalComponents = [
     {
@@ -39,6 +40,11 @@ export const modalComponents = [
     {
         name: 'month',
         'component': MonthView
+    },
+
+    {
+        name: 'day',
+        'component': DayView
     },
 
     {

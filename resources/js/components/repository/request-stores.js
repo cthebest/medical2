@@ -1,19 +1,20 @@
-import {writable, derived} from 'svelte/store';
-import {modalComponents} from "./modal-components";
-import {page} from "@inertiajs/inertia-svelte";
+import { writable, derived } from 'svelte/store';
+import { modalComponents } from "./modal-components";
+import { page } from "@inertiajs/inertia-svelte";
 
 export const request = writable({
     component: null
 });
 
-export const view_request = writable({
-    component: null
-});
 
-export const view_component = derived(view_request, $view_request => {
-    if ($view_request.component) {
-        return modalComponents.find(component => component.name === $view_request.component).component;
+
+export const view_component = derived(page, $page => {
+    const view = $page.props.query.view;
+    if (view) {
+        return modalComponents.find(component => component.name === view).component;
     }
+
+    return null;
 })
 // Obtenemos la vista modal
 export const component = derived(page, $page => {

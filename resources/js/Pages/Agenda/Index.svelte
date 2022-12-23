@@ -11,19 +11,16 @@
     import { Inertia } from "@inertiajs/inertia";
     import Configuration from "../../components/organism/agenda/configuration/Configuration.svelte";
     import SwitchProfessional from "../../components/organism/agenda/professional/SwitchProfessional.svelte";
-    import {page} from "@inertiajs/inertia-svelte";
+    import { page } from "@inertiajs/inertia-svelte";
 
     export let professional;
-
-    let view = $page.props.query.view;
     // Función que permite abrir una nueva vista modal
     // para crear citas
     function createAppointment() {
-
         Inertia.get(
             route("agenda.index", {
                 resource_user: $page.props.query.resource_user,
-                view,
+                view: $page.props.query.view,
                 dialog: "appointment",
             })
         );
@@ -41,7 +38,7 @@
                 </ButtonPrimary>
                 <Configuration />
             </div>
-            <Agenda {view} {professional} />
+            <Agenda {professional} />
         {/if}
     </Panel>
     <!--Esta directiva nos permitirá mostrar las vistas modales del módulo agenda-->

@@ -4,16 +4,21 @@
     import Hour from "./Hour.svelte";
 
     let openCalendar = false;
-    let value = "";
-    let triggerEl;
-
     export let time = {
         date: null,
         hour: "",
     };
+    let value = time.date;
+    let triggerEl;
+
     function selectedDay(event) {
         value = event.detail.date;
         time.date = value;
+    }
+
+    function openCalendar_() {
+        value = time.date;
+        openCalendar=!openCalendar;
     }
 </script>
 
@@ -27,7 +32,7 @@
             readonly
             value={time.date}
             bind:this={triggerEl}
-            on:click={() => (openCalendar = !openCalendar)}
+            on:click={openCalendar_}
         />
         {#if openCalendar}
             <ClickOutside

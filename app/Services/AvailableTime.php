@@ -12,32 +12,77 @@ class AvailableTime
 {
   private Carbon $carbon;
   private $today;
+  private Request $request;
+  private $day;
+  private $date;
 
-  public function build(Request $request)
+  public function __construct(Request $request)
   {
-    $this->carbon = Carbon::createFromFormat('Y-m-d', $request->query('date'));
+    $this->carbon = Carbon::parse($request->query('date'));
     $this->today = $this->carbon->copy()->now();
+    $this->request = $request;
+    $this->day = $this->carbon->isoWeekday();
+    $this->date = $this->request->query('date');
+  }
 
-    $day = $this->carbon->isoWeekday();
-    $date = $request->query('date');
+  public function getOfficeHour()
+  {
+    $officeHour = $this->getOfficeHourQueryFromUser($this->day, $this->date);
+    $user = $user = $this->getUser($officeHour);
+    return [
+      'officeHours' =>  $this->getIntervalsAsJson($user),
+      'duration' => $user->appointment_configuration->duration,
+    ];
+  }
 
-    $user = User::with(['weekdays' => function ($query) use ($day) {
-      $query->where('weekday_id', $day);
-    }, 'events' => function ($query) use ($date) {
-      $query->where('date', $date);
-    }, 'appointments' => function ($query) use ($date) {
-      $query->where('date', $date);
-    }, 'appointment_configuration'])->findOrFail($request->query('resource_user'));
+  public function build()
+  {
+    $officeHour = $this->getOfficeHourQueryFromUser($this->day, $this->date);
+    $appointmentsQuery = $this->getAppointmentsQueryFromUser($officeHour, $this->date);
+    $user = $this->getUser($appointmentsQuery);
 
+    // Obtenemos todas las horas laborales del usuario
+    $availables = $this->buildIntervals(
+      $this->getIntervalsAsJson($user),
+      $user->appointment_configuration->duration
+    );
+
+    return $this->buildDataUser($user, $availables);
+  }
+
+  private function getUser($user)
+  {
+    return $user->findOrFail($this->request->query('resource_user'));
+  }
+
+  private function getIntervalsAsJson($user)
+  {
     $officeHours = $user->events->first() ?? $user->weekdays->first();
-    $values = $officeHours->pivot ? $officeHours->pivot->values : $officeHours->values;
+    $values = [];
+    if ($officeHours)
+      $values = $officeHours->pivot ? $officeHours->pivot->values : $officeHours->values;
     $intervals = [];
 
     if ($values)
       $intervals = json_decode($values);
+    return $intervals;
+  }
 
-    $availables = $this->buildIntervals($intervals, $user->appointment_configuration->duration);
-    return $this->buildDataUser($user, $availables);
+
+  private function getAppointmentsQueryFromUser($user, $date)
+  {
+    return $user->with(['appointments' => function ($query) use ($date) {
+      $query->where('date', $date);
+    }]);
+  }
+
+  private function getOfficeHourQueryFromUser($day, $date)
+  {
+    return User::with(['weekdays' => function ($query) use ($day) {
+      $query->where('weekday_id', $day);
+    }, 'events' => function ($query) use ($date) {
+      $query->where('date', $date);
+    }, 'appointment_configuration']);
   }
 
   private function buildDataUser(User $user, $availables): array
@@ -68,13 +113,13 @@ class AvailableTime
     return $available;
   }
 
-  private function buildIntervals(array $intervals, int $appointment_duration): array
+  private function buildIntervals(array $intervals, int $appointment_duration, $needRange = true): array
   {
     $intervals_by_user = [];
     foreach ($intervals as $interval) {
       $startTime = $this->createDate($interval->start_time);
       $endTime = $this->createDate($interval->end_time);
-      $intervals_founded =  $this->findRanges($startTime, $endTime, $appointment_duration);
+      $intervals_founded =  $this->findRanges($startTime, $endTime, $appointment_duration, $needRange);
       foreach ($intervals_founded as $interval) {
         array_push($intervals_by_user, $interval);
       }
@@ -106,11 +151,11 @@ class AvailableTime
    * @return array Horas disponibles
    * ------------------------------------------------------------------------
    */
-  private function findRanges(Carbon $startTime, Carbon $endTime, $value): array
+  private function findRanges(Carbon $startTime, Carbon $endTime, $value, $needRange = true): array
   {
     $rangeHours = [];
     while ($startTime->lessThan($endTime)) {
-      if (!$this->isHourInRange($startTime)) {
+      if (!$this->isHourInRange($startTime) && $needRange) {
         $startTime->addMinutes($value);
         continue;
       }

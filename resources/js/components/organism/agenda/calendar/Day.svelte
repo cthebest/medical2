@@ -30,6 +30,7 @@
             class:text-gray-400={!day.isInCurrentMonth}
             class:cursor-not-allowed={!day.isValid}
             class:cursor-pointer={day.isValid}
+            class:bg-orange-100={getAppointments(day.date).length > 0}
             on:click={() => selected_day(day)}
         >
             <div class="flex justify-end">
@@ -43,7 +44,10 @@
                 </span>
             </div>
             {#if appointments && appointments.length > 0}
-                <Appointments appointments={getAppointments(day.date)} />
+                <Appointments
+                    appointments={getAppointments(day.date)}
+                    date={day.date}
+                />
             {/if}
         </div>
     {/each}

@@ -16,7 +16,7 @@
     let currentDate;
     // La fecha actual
     let todayDate = null;
-    export let dayView = "h-28";
+    export let dayView = "h-24";
 
     let weekdays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 

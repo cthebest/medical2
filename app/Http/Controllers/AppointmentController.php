@@ -21,7 +21,17 @@ class AppointmentController extends Controller
         $date = Carbon::parse($request->query('date'));
         $appointments = Appointment::with('patient')->whereHas('user', function ($q) use ($request) {
             $q->where('id', $request->query('resource_user'));
-        })->whereYear('date', $date->year)->whereMonth('date', $date->month)->get();
+        })->whereYear('date', $date->year)->whereMonth('date', $date->month)->orderBy('start_time', 'asc')->get();
+
+        return response()->json($appointments);
+    }
+
+    public function getAppointmentsByDate(Request $request)
+    {
+        $date = Carbon::parse($request->query('date'));
+        $appointments = Appointment::with('patient')->whereHas('user', function ($q) use ($request) {
+            $q->where('id', $request->query('resource_user'));
+        })->where('date', $date)->orderBy('start_time', 'asc')->get();
 
         return response()->json($appointments);
     }

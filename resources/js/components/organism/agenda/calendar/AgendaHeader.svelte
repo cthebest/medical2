@@ -3,13 +3,31 @@
     import Fa from "svelte-fa/src/fa.svelte";
     import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
     import { createEventDispatcher } from "svelte";
-
+    import { Inertia } from "@inertiajs/inertia";
+    import { page } from "@inertiajs/inertia-svelte";
+    import { request } from "../../../repository/request-stores";
     const dispatch = createEventDispatcher();
-    // Esta variable nos permite determinar la vista
-    // que se debe mostrar en la página de agenda
-    export let isMonthSelected = true;
+
     // El nombre del mes seleccionado
     export let label;
+
+    function selectedMonthView() {
+        Inertia.get(
+            route("agenda.index", {
+                resource_user: $page.props.query.resource_user,
+                view: "month",
+            })
+        );
+    }
+
+    function selectedDayView() {
+        Inertia.get(
+            route("agenda.index", {
+                resource_user: $page.props.query.resource_user,
+                view: "day",
+            })
+        );
+    }
 </script>
 
 <div class="flex  items-center justify-between">
@@ -36,10 +54,17 @@
     </div>
 
     <div>
-        <button class="bg-[#006699] p-2 text-gray-200 rounded-lg">Hoy</button>
         <button
             class="bg-[#006699] p-2 text-gray-200 rounded-lg"
-            class:selected={isMonthSelected}
+            on:click={selectedDayView}
+            class:selected={$page.props.query.view === "day"}
+        >
+            Día
+        </button>
+        <button
+            class="bg-[#006699] p-2 text-gray-200 rounded-lg"
+            class:selected={$page.props.query.view === "month"}
+            on:click={selectedMonthView}
         >
             Mes
         </button>

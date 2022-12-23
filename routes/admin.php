@@ -44,6 +44,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('/', [AgendaController::class, 'index'])
             ->name('agenda.index')->middleware('can:show_agenda');
 
+        Route::get('get-office-hour-view', [AgendaController::class, 'getOfficeHour'])
+            ->name('agenda.get-office-hour-view');
+
         // Mostrar las citas de cada profesional
         Route::get('appointments-count', [AgendaController::class, 'getAppointmentsCount'])
             ->name('agenda.get-appointments-count');
@@ -67,6 +70,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
         Route::resource('office-hours', OfficeHourController::class)
             ->except('destroy', 'edit', 'update');
+
+        Route::get('appointments-by-date', [AppointmentController::class, 'getAppointmentsByDate'])->name('appointments-by-date');
     });
     Route::get('professionals', [
         ProfessionalController::class,

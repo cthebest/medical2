@@ -1,26 +1,29 @@
 <script>
-    export let appointments;
-    let count = appointments.length - 3 > 0 ? appointments.length - 3 : 0;
+    import AppoinmentsList from "./AppoinmentsList.svelte";
 
-    let appointmentsFilter = appointments.slice(0, 3);
+    export let appointments;
+    export let date;
+    let count = appointments.length - 2 > 0 ? appointments.length - 2 : 0;
+
+    let appointmentsFilter = appointments.slice(0, 2);
 </script>
 
 {#if appointments && appointments.length > 0}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
-        class=" z-50 px-2 space-y-1"
+        class="px-2 space-y-1 relative"
         on:click={() => console.log("hola mundo")}
     >
         {#each appointmentsFilter as appointment}
-            <div class="flex items-center relative">
-                <div class="h-2 w-2 bg-blue-700 rounded-full absolute" />
-                <p class="ml-2 font-bold text-xs truncate">
+            <div class="flex items-center relative hover:bg-gray-300 space-x-2">
+                <span class="text-xs">{appointment.start_time}</span>
+                <span class="font-bold text-xs truncate">
                     {appointment.patient.name}
-                </p>
+                </span>
             </div>
         {/each}
         {#if count > 0}
-            <span class="text-xs">+{count} más</span>
+            <AppoinmentsList {appointments} hiddenQuotes={count} {date} />
         {/if}
     </div>
 {/if}

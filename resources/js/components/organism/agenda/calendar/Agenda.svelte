@@ -1,18 +1,10 @@
 <script>
     import AgendaHeader from "./AgendaHeader.svelte";
-    import {
-        view_component,
-        view_request,
-    } from "../../../repository/request-stores";
+    import { view_component } from "../../../repository/request-stores";
 
-    export let view, professional;
     let action = null;
     let label = null;
-    $: if (view) {
-        $view_request.component = view;
-    } else {
-        $view_request.component = null;
-    }
+    export let professional;
 </script>
 
 <div class="mt-5">
