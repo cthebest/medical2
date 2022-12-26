@@ -24,10 +24,10 @@ class OfficeHourController extends Controller
         $user->addOfficeHours($request->officeHours);
 
         $request->session()->flash('message', 'Se ha creado un horario laboral');
-
         return redirect()->route('agenda.index', [
             'dialog' => 'show-office-hours',
-            'resource_user' => $user->id
+            'resource_user' => $user->id,
+            'view' => $request->query('view')
         ]);
     }
 
@@ -55,8 +55,9 @@ class OfficeHourController extends Controller
         $user->weekdays()->detach([$weekday->id]);
 
         return redirect()->route('agenda.index', [
-            'dialog' => 'show-office-hours',
-            'resource_user' => $user->id
+            'dialog' => $request->query('dialog'),
+            'resource_user' => $user->id,
+            'view' => $request->query('view')
         ]);
     }
 }

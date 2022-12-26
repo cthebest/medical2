@@ -8,13 +8,21 @@
     export let processing = false;
     let errors;
     export let article = {
-        title: null,
-        file: null,
+        title: "",
+        file: "",
         body: "",
+        url_photo: "",
     };
 
     const onFileSelected = (e) => {
-        article.file = e.target.files[0];
+        let image = e.target.files[0];
+        article.file = image;
+
+        let reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onload = (e) => {
+            article.url_photo = e.target.result;
+        };
     };
 </script>
 
@@ -29,6 +37,19 @@
         />
         <div>
             <label for="avatar" class="block">Foto de portada</label>
+            {#if article.url_photo}
+                <img
+                    src={article.url_photo}
+                    alt=""
+                    class="w-32 h-32 object-contain"
+                />
+            {:else}
+                <img
+                    class="w-32 h-32"
+                    src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+                    alt=""
+                />
+            {/if}
             <input
                 type="file"
                 id="avatar"
@@ -42,6 +63,6 @@
             bind:value={article.body}
         />
 
-        <ButtonActions on:save on:close />
+        <ButtonActions on:save on:close permission="create_articles" />
     </Form>
 </Panel>

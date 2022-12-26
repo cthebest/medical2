@@ -103,6 +103,6 @@
             </FormGroup>
         {/if}
 
-        <ButtonActions on:save on:close />
+        <ButtonActions on:save on:close permission="create_menu_items" />
     </Form>
 </Panel>

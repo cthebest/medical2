@@ -25,9 +25,9 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>[
+            'title' => [
                 'required',
-                Rule::unique('articles','title')->ignore($this->article)
+                Rule::unique('articles', 'title')->ignore($this->article)
             ],
         ];
     }

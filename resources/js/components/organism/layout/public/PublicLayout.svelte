@@ -37,12 +37,15 @@
         <nav class="bg-[#99cc33] px-5 py-2">
             <ul class="text-white flex space-x-3">
                 {#each menuItems as menuItem}
-                    <li class="flex flex-col">
-                        <div
-                            class="bg-[#006699] h-8 w-8 rounded-full flex justify-center items-center"
-                        >
-                            <i class={menuItem.icon} />
-                        </div>
+                    <li class="flex flex-col justify-center items-center">
+                        {#if menuItem.icon}
+                            <div
+                                class="bg-[#006699] h-8 w-8 rounded-full flex 
+                            justify-center items-center"
+                            >
+                                <i class={menuItem.icon} />
+                            </div>
+                        {/if}
                         <a href={menuItem.path}>{menuItem.title}</a>
                     </li>
                 {/each}
@@ -50,3 +53,7 @@
         </nav>
     </header>
 </div>
+
+<main>
+    <slot />
+</main>

@@ -64,7 +64,7 @@ class ArticleController extends Controller
 
         if ($request->has('file') && $request->file('file')) {
             $path = Storage::putFileAs(
-                'article/images',
+                'public/article/images',
                 $request->file('file'),
                 $request->file('file')->hashName()
             );
@@ -94,14 +94,14 @@ class ArticleController extends Controller
         return response()->json($article);
     }
 
-    public function update(Article $article, StoreArticleRequest $request)
+    public function update(StoreArticleRequest $request, Article $article)
     {
         $this->authorize('update', $article);
 
         $path = null;
         if ($request->has('file')) {
             $path = Storage::putFileAs(
-                'article/images',
+                'public/article/images',
                 $request->file('file'),
                 $request->file('file')->hashName()
             );

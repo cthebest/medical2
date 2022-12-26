@@ -9,12 +9,12 @@
     onMount(() => getOfficeHour());
 
     function getOfficeHour() {
-
-
         axios
-            .get(route("office-hours.index", {
-                resource_user: $page.props.query.resource_user
-            }))
+            .get(
+                route("office-hours.index", {
+                    resource_user: $page.props.query.resource_user,
+                })
+            )
             .then((response) => (officeHours = response.data));
     }
 
@@ -37,6 +37,8 @@
             route("office-hours.destroy", {
                 resource_user: $page.props.query.resource_user,
                 weekday_id: id,
+                view: $page.props.query.view,
+                dialog: $page.props.query.dialog,
             }),
             {
                 onSuccess: () => getOfficeHour(),

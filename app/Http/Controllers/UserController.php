@@ -41,24 +41,12 @@ class UserController extends Controller
         // Creamos un nuevo usuario
         $user = (new User)->fill(array_merge(
             $request->except('role'),
-            ['password' => Hash::make(Str::random(8))]
+            ['password' => Hash::make($request->email)]
         ));
 
         $user->appointment_configuration()->associate($duration);
         $user->assignRole($request->only('role'));
         $user->save();
-
-        //Generación de token y almacenado en la tabla password_resets
-        $token = Str::random(64);
-
-        DB::table('password_resets')->insert([
-            'email' => $request->email,
-            'token' => $token,
-            'created_at' => Carbon::now()
-        ]);
-
-        // Enviamos el correo electrónico al usuario creado
-        Mail::to($user->email)->send(new UserRegistered($user, $token));
 
         $request->session()->flash('message', 'El usuario fue creado');
 

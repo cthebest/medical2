@@ -5,22 +5,20 @@
     import Intervals from "./timer/Intervals.svelte";
     import Form from "../../atoms/form/Form.svelte";
     import ButtonActions from "../../molecules/form/ButtonActions.svelte";
-
+    import { page } from "@inertiajs/inertia-svelte";
     let weekdays = [];
     let officeHours = { weekdays: [], intervals: [{}] };
     let processing = false;
-    let resource_user;
 
     function store() {
         let officeHour = officeHours.weekdays.map((weekday) => {
             return { id: weekday, values: officeHours.intervals };
         });
-
-        console.log(officeHour);
         Inertia.post(
             route("office-hours.store", {
-                resource_user: resource_user, // TODO este es el id del usuario autenticado
+                resource_user: $page.props.query.resource_user, // TODO este es el id del usuario autenticado
                 dialog: "create-office-hours",
+                view: $page.props.query.view,
             }),
             {
                 officeHours: officeHour,
@@ -39,9 +37,9 @@
     function close() {
         Inertia.get(
             route("agenda.index", {
-                resource_user: resource_user,
+                resource_user: $page.props.query.resource_user,
                 dialog: "show-office-hours",
-                view: "month",
+                view: $page.props.query.view,
             })
         );
     }
@@ -49,10 +47,12 @@
     onMount(() => getWeekdays());
 
     function getWeekdays() {
-        const url = new URL(window.location).searchParams;
-        resource_user = url.get("resource_user");
         axios
-            .get(route("agenda.getWeekdays", { resource_user: resource_user }))
+            .get(
+                route("agenda.getWeekdays", {
+                    resource_user: $page.props.query.resource_user,
+                })
+            )
             .then((response) => (weekdays = response.data));
     }
 

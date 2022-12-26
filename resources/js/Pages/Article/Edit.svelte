@@ -8,9 +8,14 @@
     let article;
     export let id;
     function store() {
-        Inertia.put(
+        Inertia.post(
             route("articles.update", { article: article.id }),
-            article,
+            {
+                _method: "put",
+                title: article.title,
+                body: article.body,
+                file: article.file,
+            },
             {
                 onStart: () => (processing = true),
                 onFinish: () => (processing = false),
@@ -29,6 +34,8 @@
             .get(route("articles.get-article", { article: id }))
             .then((response) => {
                 article = response.data;
+
+                console.log(article);
                 if (response.data.body) {
                     article = response.data;
                 } else {

@@ -19,7 +19,7 @@ class MenuItemController extends Controller
 
     public function index()
     {
-        $menuItems = MenuItem::paginate(1);
+        $menuItems = MenuItem::paginate(10);
         return Inertia('MenuItem/Index', compact('menuItems'));
     }
 

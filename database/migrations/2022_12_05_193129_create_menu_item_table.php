@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('path', 1024);
             $table->string('link', 1024); //formado por http://dominio.com/article?resource=dato // donde article es el tipo y resource es el recurso que será solicitado
 
