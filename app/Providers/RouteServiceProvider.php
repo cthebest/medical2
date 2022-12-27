@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\MenuItem;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        $this->routing();
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -41,6 +43,37 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/admin.php'));
+        });
+    }
+
+    private function routing()
+    {
+        Route::middleware('web')->get('{url}', function () {
+            $requestUri = request()->getUri();
+            $uri = parse_url($requestUri);
+            $menuItem = MenuItem::wherePath($uri['scheme'] . '://' . $uri['host'] . $uri['path'])->first();
+            if ($menuItem) {
+                // Creamos un request para obtener el componente
+                $url = parse_url($menuItem->link, PHP_URL_QUERY);
+                $query = [];
+                $parameter = null;
+                parse_str($url, $query);
+                $module = $query['module'];
+
+                if (count($query) > 1) {
+                    $module .= '.' . $query['search_by'];
+                    $parameter = $query['resource'];
+                }
+
+                // Obtenemos todas las rutas de nuestro
+                $routes = Route::getRoutes();
+                // Obtenemos la objeto de la ruta que necesitamos
+                $route = $routes->getByName($module);
+                $route->bind(request());
+                // Le asignamos los parámetros
+                $route->setParameter('id', $parameter);
+                return $route->run();
+            }
         });
     }
 

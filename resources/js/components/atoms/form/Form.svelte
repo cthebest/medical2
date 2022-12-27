@@ -6,23 +6,24 @@
 
     $: if ($page.props.errors) {
         errors = $page.props.errors;
+        console.log(errors);
     }
 </script>
 
 <form class="space-y-4 relative">
-    {#if $page.props.flash.message}
+    {#if $page.props.flash?.message}
         <div
             class="border border-green-200 text-green-700 bg-green-200 p-2 rounded-md"
         >
-            <span>{$page.props.flash.message}</span>
+            <span>{$page.props.flash?.message}</span>
         </div>
     {/if}
 
-    {#if $page.props.errors.message}
+    {#if $page.props.errors?.message}
         <div
             class="border border-red-200 text-red-700 bg-red-200 p-2 rounded-md"
         >
-            <span>{$page.props.errors.message}</span>
+            <span>{$page.props.errors?.message}</span>
         </div>
     {/if}
     <slot />

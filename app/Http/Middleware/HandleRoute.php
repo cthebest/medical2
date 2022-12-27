@@ -2,11 +2,16 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\ContactController;
 use App\Models\MenuItem;
 use App\Models\User;
 use Closure;
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 class HandleRoute
 {
@@ -19,23 +24,7 @@ class HandleRoute
      */
     public function handle(Request $request, Closure $next)
     {
-        /*
-         * Nos permitirá obtener la ruta específica al controlador
-         * tabla: Menu
-         *      -id
-         *      -name
-         *      -url /contactenos->se genera automáticamente -> lo que ve el usuario
-         *      -resource ->si escoge un recurso
-         *      -link /article?tag=recurso->se genera automáticamente -> lo que ve la máquina
-            $request = Request::create('/algo/mio', 'GET', [], [], [], $_SERVER);
-            return Route::dispatch($request);
-        */
-        $menuItem = MenuItem::wherePath($request->getUri())->first();
-        if (!$menuItem) {
-            return $next($request);
-        }
-
-        $request = Request::create($menuItem->link, 'GET', [], [], [], $_SERVER);
-        return Route::dispatch($request);
+        
+        return $next($request);
     }
 }
