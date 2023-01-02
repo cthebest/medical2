@@ -2,7 +2,7 @@
     import Select from "../../atoms/inputs/Select.svelte";
     import FormGroup from "../../atoms/group/FormGroup.svelte";
 
-    export let text, name, value, data, field;
+    export let text, name, value, data='', field;
 </script>
 
 <FormGroup class="group">

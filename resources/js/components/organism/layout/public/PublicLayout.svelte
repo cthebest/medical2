@@ -26,21 +26,13 @@
 </svelte:head>
 <div class="bg-[#99cc33] mx-40">
     <header>
-        <div id="slider">
-            <img
-                src={prueba}
-                id="image"
-                alt=""
-                class="w-full h-96 object-fill"
-            />
-        </div>
-        <nav class="bg-[#99cc33] px-5 py-2">
-            <ul class="text-white flex space-x-3">
+        <nav class="bg-[#006699] px-5 py-4">
+            <ul class="text-white flex space-x-5">
                 {#each menuItems as menuItem}
                     <li class="flex flex-col justify-center items-center">
                         {#if menuItem.icon}
                             <div
-                                class="bg-[#006699] h-8 w-8 rounded-full flex 
+                                class="h-8 w-8 rounded-full flex 
                             justify-center items-center"
                             >
                                 <i class={menuItem.icon} />

@@ -7,7 +7,7 @@
     let processing = false;
 
     let user = {
-        role: "professional",
+        role: "",
     };
 
     function create() {
@@ -34,6 +34,7 @@
             .then((response) => {
                 response.data.role = response.data.roles[0].name;
                 user = response.data;
+                console.log(user);
             });
     }
 </script>

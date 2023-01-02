@@ -7,7 +7,7 @@
     let processing = false;
 
     let user = {
-        role: "professional",
+        role: "",
     };
 
     function create() {
@@ -16,7 +16,7 @@
                 processing = true;
             },
             onSuccess: () => {
-                user = { role: "professional" };
+                user = { role: "" };
             },
             onFinish: () => {
                 processing = false;

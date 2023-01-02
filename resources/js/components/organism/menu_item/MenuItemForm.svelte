@@ -73,7 +73,7 @@
             <select
                 name="resource"
                 id="resource"
-                class="p-3 rounded-md"
+                class="p-3 rounded-md border"
                 bind:value={menuItem.component_type}
                 on:change={resetResource}
             >

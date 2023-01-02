@@ -14,24 +14,39 @@
     }
 </script>
 
-<Panel class="panel-md">
-    <Form {processing}>
-        <h1>Contactenos</h1>
-        <InputLabel
-            title="Nombre *"
-            type="text"
-            name="name"
-            errorType={errors?.name}
-            bind:value={contactUs.name}
-        />
-        <InputLabel
-            title="Email *"
-            type="email"
-            name="email"
-            errorType={errors?.email}
-            bind:value={contactUs.email}
-        />
-
-        <ButtonPrimary on:click={sendMessage}>Enviar mensaje</ButtonPrimary>
-    </Form>
-</Panel>
+<PublicLayout>
+    <div class="flex justify-center mt-5">
+        <Panel class="panel-lg">
+            <Form {processing}>
+                <h1>Contáctenos</h1>
+                <InputLabel
+                    title="Nombre *"
+                    type="text"
+                    name="name"
+                    errorType={errors?.name}
+                    bind:value={contactUs.name}
+                />
+                <InputLabel
+                    title="Email *"
+                    type="email"
+                    name="email"
+                    errorType={errors?.email}
+                    bind:value={contactUs.email}
+                />
+                <div>
+                    <label for="" class="block">Comentario</label>
+                    <textarea
+                        name="description"
+                        id=""
+                        cols="30"
+                        rows="10"
+                        class="border w-full"
+                    />
+                </div>
+                <ButtonPrimary on:click={sendMessage}
+                    >Enviar mensaje</ButtonPrimary
+                >
+            </Form>
+        </Panel>
+    </div>
+</PublicLayout>

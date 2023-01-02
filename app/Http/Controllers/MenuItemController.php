@@ -46,24 +46,15 @@ class MenuItemController extends Controller
 
     public function edit(MenuItem $menuItem)
     {
-        $url_parts = explode('/', $menuItem->link);
 
         $menuItemCollection = new Collection();
-
-        if (count($url_parts) - 1 > 2) {
-            $menuItemCollection->put('component_type', $url_parts[3]);
-        } else {
-            $menuItemCollection->put('component_type', '');
-        }
-
-        if (count($url_parts) - 1 > 3) {
-            $menuItemCollection->put('resource', $url_parts[4]);
-        } else {
-            $menuItemCollection->put('resource', 0);
-        }
+        $url = parse_url($menuItem->link, PHP_URL_QUERY);
+        parse_str($url, $query);
 
         $menuItemCollection->put('title', $menuItem->title);
         $menuItemCollection->put('id', $menuItem->id);
+        $menuItemCollection->put('component_type', isset($query['module']) ? $query['module'] : '');
+        $menuItemCollection->put('resource', isset($query['resource']) ? $query['resource'] : '');
         $menuItem = $menuItemCollection;
 
         return Inertia('MenuItem/Edit', compact('menuItem'));
@@ -86,18 +77,20 @@ class MenuItemController extends Controller
 
     private function getAttributes(Request $request)
     {
-        $resource = '';
-        $alias = '';
-        if ($request->get('resource') && $request->get('resource') > 0) {
-            $resource = $request->resource;
-        }
+
+        $attributes = [];
         if ($request->component_type) {
-            $alias = Str::slug($request->title);
+            $attributes['module'] = $request->component_type;
+        }
+
+        if ($request->resource) {
+            $attributes['resource'] = $request->resurce;
         }
         // Lo que verá el usuario en la url de su navegador
-        $path = url($alias);
+        $path = url(Str::slug($request->title));
         // Lo que entenderá el sistema una vez se busque el item de menú
-        $link = url($request->component_type ?? '', $resource);
+        $link = url('?' . http_build_query($attributes));
+
         return array_merge($request->only('title', 'icon'), ['path' => $path, 'link' => $link]);
     }
 

@@ -29,20 +29,20 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        $this->routing();
         $this->routes(function () {
             Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
+            
             Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-
+            ->group(base_path('routes/web.php'));
+            
             Route::middleware('web')
-                ->group(base_path('routes/guest.php'));
-
+            ->group(base_path('routes/guest.php'));
+            
             Route::middleware('web')
-                ->group(base_path('routes/admin.php'));
+            ->group(base_path('routes/admin.php'));
+            $this->routing();
         });
     }
 
@@ -50,8 +50,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('web')->get('{url}', function () {
             $requestUri = request()->getUri();
-            $uri = parse_url($requestUri);
-            $menuItem = MenuItem::wherePath($uri['scheme'] . '://' . $uri['host'] . $uri['path'])->first();
+            $menuItem = MenuItem::wherePath($requestUri)->first();
             if ($menuItem) {
                 // Creamos un request para obtener el componente
                 $url = parse_url($menuItem->link, PHP_URL_QUERY);

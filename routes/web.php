@@ -15,7 +15,6 @@ Route::post('/contacts', [ContactController::class, 'send'])->name('contacts.sen
 
 Route::prefix('articles')->group(function () {
     Route::get('/', function () {
-        dd(request()->all());
         return "Hola artículos";
     })->name('articles');
 
