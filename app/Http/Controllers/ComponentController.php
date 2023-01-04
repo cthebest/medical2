@@ -11,6 +11,6 @@ class ComponentController extends Controller
     {
         $components = Component::all();
 
-        return response()->json($components);
+        return response()->json($components, 200,[], JSON_NUMERIC_CHECK);
     }
 }
