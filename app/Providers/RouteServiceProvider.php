@@ -60,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
                 $module = $query['module'];
 
                 if (count($query) > 1) {
-                    $module .= '.' . $query['search_by'];
+                    $module .= '.id';
                     $parameter = $query['resource'];
                 }
 
