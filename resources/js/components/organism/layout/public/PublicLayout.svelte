@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import prueba from "images/fondoheader.png";
+    import img_header from "images/inicio/img_header.png";
     // Hola mundo
 
     let menuItems = [];
@@ -24,8 +24,9 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     />
 </svelte:head>
-<div class="bg-[#99cc33] mx-40">
+<div class="mx-40">
     <header>
+        <img src={img_header} alt="" class="w-full" />
         <nav class="bg-[#006699] px-5 py-4">
             <ul class="text-white flex space-x-5">
                 {#each menuItems as menuItem}
@@ -46,6 +47,6 @@
     </header>
 </div>
 
-<main>
+<main class="flex mx-40 mt-5">
     <slot />
 </main>

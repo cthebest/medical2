@@ -15,7 +15,7 @@
 </script>
 
 <PublicLayout>
-    <div class="flex justify-center mt-5">
+  
         <Panel class="panel-lg">
             <Form {processing}>
                 <h1>Contáctenos</h1>
@@ -48,5 +48,5 @@
                 >
             </Form>
         </Panel>
-    </div>
+   
 </PublicLayout>
