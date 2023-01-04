@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PublicArticleController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,14 +14,10 @@ Route::get('/', function () {
 Route::get('/contacts', [ContactController::class, 'create'])->name('contacts');
 Route::post('/contacts', [ContactController::class, 'send'])->name('contacts.send');
 
-Route::prefix('articles')->group(function () {
-    Route::get('/', function () {
-        return "Hola artículos";
-    })->name('articles');
-
-    Route::get('{id}', function ($id) {
-        return "Hola artículo:" . $id;
-    })->name('articles.id');
+Route::prefix('articles')->controller(PublicArticleController::class)->group(function () {
+    Route::get('/', 'index')->name('articles');
+    Route::get('{id}', 'show')->name('articles.id');
+    Route::get('/article/{article}', 'getArticle')->name('articles.get');
 });
 
 
@@ -29,6 +26,3 @@ Route::get('menu-items/get-all', [PublicController::class, 'getMenuItems'])
 
 Route::get('available-times', [AgendaController::class, 'getAvailableTimes'])
     ->name('available-times');
-
-
-    

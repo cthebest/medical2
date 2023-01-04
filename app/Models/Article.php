@@ -35,6 +35,8 @@ class Article extends Model
 
     public function getUrlPhotoAttribute($value)
     {
-        return Storage::url($value);
+        if ($value)
+            return Storage::url($value);
+        return $value;
     }
 }
