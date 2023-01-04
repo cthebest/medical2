@@ -84,7 +84,7 @@ class MenuItemController extends Controller
         }
 
         if ($request->resource) {
-            $attributes['resource'] = $request->resurce;
+            $attributes['resource'] = $request->resource;
         }
         // Lo que verá el usuario en la url de su navegador
         $path = url($request->component_type ? Str::slug($request->title) : '');

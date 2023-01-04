@@ -27,13 +27,13 @@
 <div class="mx-40">
     <header>
         <img src={img_header} alt="" class="w-full" />
-        <nav class="bg-[#006699] px-5 py-4">
+        <nav class="bg-[#006699] px-5 py-2">
             <ul class="text-white flex space-x-5">
                 {#each menuItems as menuItem}
                     <li class="flex flex-col justify-center items-center">
                         {#if menuItem.icon}
                             <div
-                                class="h-8 w-8 rounded-full flex 
+                                class="flex 
                             justify-center items-center"
                             >
                                 <i class={menuItem.icon} />
