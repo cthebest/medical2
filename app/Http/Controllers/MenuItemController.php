@@ -87,7 +87,7 @@ class MenuItemController extends Controller
             $attributes['resource'] = $request->resurce;
         }
         // Lo que verá el usuario en la url de su navegador
-        $path = url(Str::slug($request->title));
+        $path = url($request->component_type ? Str::slug($request->title) : '');
         // Lo que entenderá el sistema una vez se busque el item de menú
         $link = url('?' . http_build_query($attributes));
 
