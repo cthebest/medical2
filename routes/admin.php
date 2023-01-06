@@ -20,15 +20,24 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/', function () {
         return Inertia('Welcome');
     });
-    Route::get('components', [ComponentController::class, 'index'])->name('components');
-
-    Route::get('articles/get-all', [ArticleController::class, 'all'])->name('articles.get-all');
-
+    // ---------------------------------------------------------------
+    // Componentes
+    // ---------------------------------------------------------------
+    Route::controller(ComponentController::class)->group(function () {
+        // Obtener todos los componentes disponibles para el menú
+        Route::get('components', 'index')->name('components');
+        // Buscar recursos de acuerdo al componente seleccionado
+        Route::get('components/search_resources', 'showResources')->name('components.resources');
+    });
+    // -----------------------------------------------------------------
+    // Usuarios sesión
+    // -----------------------------------------------------------------
     Route::get('logout', [LoginController::class, 'logout'])
         ->name('logout');
     Route::get('roles', RoleController::class)->name('admin.roles');
-    // Rutas para el perfil
-
+    // ------------------------------------------------------------------
+    // Perfil
+    // ------------------------------------------------------------------
     Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::put('profile/{user}/password-update', [ProfileController::class, 'password_update'])
@@ -37,8 +46,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         ->name('profile.update');
 
     Route::get('patient', [PatientController::class, 'index'])->name('patient');
-
-    // Rutas para la agenda-----
+    // ------------------------------------------------------------------
+    // Agenda
+    // ------------------------------------------------------------------
     Route::prefix('agenda')->group(function () {
 
         Route::get('/', [AgendaController::class, 'index'])

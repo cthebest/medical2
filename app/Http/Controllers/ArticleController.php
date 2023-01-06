@@ -33,12 +33,6 @@ class ArticleController extends Controller
         return Inertia('Article/Index', compact('articles'));
     }
 
-
-    public function all()
-    {
-        return response()->json(Article::all('alias', 'id', 'title'));
-    }
-
     public function create()
     {
         if (!auth()->user()->can('create_articles')) {
@@ -70,7 +64,7 @@ class ArticleController extends Controller
             );
         }
 
-        $attributes = $request->merge(['url_photo' => $path, 'alias' => Str::slug($request->title)]);
+        $attributes = $request->merge(['image' => $path, 'alias' => Str::slug($request->title)]);
 
         $article = (new Article)->fill($attributes->except('file'));
         $article->user()->associate(auth()->user());
@@ -107,7 +101,7 @@ class ArticleController extends Controller
             );
         }
 
-        $attributes = $request->merge(['url_photo' => $path, 'alias' => Str::slug($request->title)]);
+        $attributes = $request->merge(['image' => $path, 'alias' => Str::slug($request->title)]);
         $article->update($attributes->except('file'));
         $request->session()->flash('message', 'Artículo actualizado con éxito');
     }

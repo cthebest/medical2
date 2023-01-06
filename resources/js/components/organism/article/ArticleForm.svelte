@@ -11,7 +11,7 @@
         title: "",
         file: "",
         body: "",
-        url_photo: "",
+        image: "",
     };
 
     const onFileSelected = (e) => {
@@ -21,7 +21,7 @@
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = (e) => {
-            article.url_photo = e.target.result;
+            article.image = e.target.result;
         };
     };
 </script>
@@ -37,9 +37,9 @@
         />
         <div>
             <label for="avatar" class="block">Foto de portada</label>
-            {#if article.url_photo}
+            {#if article.image}
                 <img
-                    src={article.url_photo}
+                    src={article.image}
                     alt=""
                     class="w-32 h-32 object-contain"
                 />

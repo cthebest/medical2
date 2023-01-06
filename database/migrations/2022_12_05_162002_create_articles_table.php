@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('alias');
             $table->text('body')->nullable();
-            $table->string('url_photo')->nullable();
+            $table->string('image')->nullable();
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

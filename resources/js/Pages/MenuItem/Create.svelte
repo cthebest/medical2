@@ -6,7 +6,7 @@
 
     let menuItem = {
         title: null,
-        component_type: "",
+        
         resource: 0,
     };
 

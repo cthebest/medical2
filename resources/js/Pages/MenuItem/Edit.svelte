@@ -6,7 +6,7 @@
 
     let processing;
     export let menuItem;
-
+    
     function store() {
         Inertia.put(
             route("menu-items.update", { menu_item: menuItem.id }),

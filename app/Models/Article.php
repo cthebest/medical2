@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Services\UrlGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class Article extends Model
 {
@@ -14,8 +16,11 @@ class Article extends Model
         'title',
         'alias',
         'body',
-        'url_photo'
+        'image'
     ];
+
+    protected $appends = ['url'];
+
 
     /**
      * The attributes that should be cast.
@@ -38,5 +43,11 @@ class Article extends Model
         if ($value)
             return Storage::url($value);
         return $value;
+    }
+
+    public function getUrlAttribute()
+    {
+        $urlGenerator = new UrlGenerator;
+        return $urlGenerator->generate(1, $this);
     }
 }

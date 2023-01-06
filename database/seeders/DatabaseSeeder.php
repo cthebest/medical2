@@ -155,27 +155,62 @@ class DatabaseSeeder extends Seeder
                 [
                     'name' => 'articles',
                     'label' => 'Artículos',
-                    'has_table' => true
+                    'params' => json_encode([
+                        'table' => 'articles',
+                        'route' => [
+                            'resource' => 'articles.id',
+                            'index' => 'articles'
+                        ],
+                        'search_model_by' => ['id', 'alias']
+                    ])
                 ],
                 [
                     'name' => 'contacts',
                     'label' => 'Contáctenos',
-                    'has_table' => false
+                    'params' => json_encode([
+                        'table' => '',
+                        'route' => [
+                            'resource' => '',
+                            'index' => 'contacts'
+                        ],
+                        'search_model_by' => []
+                    ])
                 ],
                 [
                     'name' => 'appointments',
                     'label' => 'Citas',
-                    'has_table' => false,
+                    'params' => json_encode([
+                        'table' => '',
+                        'route' => [
+                            'resource' => '',
+                            'index' => 'appointments'
+                        ],
+                        'search_model_by' => []
+                    ])
                 ],
                 [
                     'name' => 'invoices',
                     'label' => 'Facturación',
-                    'has_table' => false,
+                    'params' => json_encode([
+                        'table' => '',
+                        'route' => [
+                            'resource' => '',
+                            'index' => 'invoices'
+                        ],
+                        'search_model_by' => []
+                    ])
                 ],
                 [
                     'name' => 'photos',
                     'label' => 'Fotos',
-                    'has_table' => true,
+                    'params' => json_encode([
+                        'table' => 'albums',
+                        'route' => [
+                            'resource' => '',
+                            'index' => 'photos'
+                        ],
+                        'search_model_by' => ['id', 'alias']
+                    ])
                 ]
             ]
         );

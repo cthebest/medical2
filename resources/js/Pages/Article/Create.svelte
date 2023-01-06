@@ -19,7 +19,7 @@
             onSuccess: () => {
                 article = {
                     title: null,
-                    url_photo: null,
+                    image: null,
                     body: "",
                 };
             },

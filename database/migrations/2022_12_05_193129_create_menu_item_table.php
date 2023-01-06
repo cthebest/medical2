@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('icon')->nullable();
             $table->string('path', 1024);
-            $table->string('link', 1024); //formado por http://dominio.com/article?resource=dato // donde article es el tipo y resource es el recurso que será solicitado
-
+            $table->json('association'); //formado {module='name', resource='resource'}
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 
 class MenuItem extends Model
 {
@@ -13,7 +14,7 @@ class MenuItem extends Model
         'title',
         'icon',
         'path',
-        'link'
+        'association'
     ];
 
     /**
@@ -26,4 +27,17 @@ class MenuItem extends Model
         'updated_at' => 'datetime:Y-m-d H:m',
 
     ];
+
+    protected $url;
+
+    public function getAssociationAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+
+    public function getPathAttribute($value)
+    {
+        return URL::to($value);
+    }
 }

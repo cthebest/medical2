@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class PublicArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::paginate(20);
         return Inertia('Public/Article/Index', compact('articles'));
     }
 

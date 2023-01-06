@@ -48,7 +48,6 @@
             <tr>
                 <Thead>Título</Thead>
                 <Thead>Ruta</Thead>
-                <Thead>Link interno</Thead>
                 <Thead>Fecha de creación</Thead>
                 <Thead>Fecha de actualización</Thead>
                 <Thead>Acciones</Thead>
@@ -58,7 +57,6 @@
                     <tr>
                         <TDataCell>{menuItem.title}</TDataCell>
                         <TDataCell>{menuItem.path}</TDataCell>
-                        <TDataCell>{menuItem.link}</TDataCell>
                         <TDataCell>{menuItem.created_at}</TDataCell>
                         <TDataCell>{menuItem.updated_at}</TDataCell>
                         <TDataCell>

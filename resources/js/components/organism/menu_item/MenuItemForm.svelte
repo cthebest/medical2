@@ -4,32 +4,28 @@
     import ButtonActions from "../../molecules/form/ButtonActions.svelte";
     import InputLabel from "../../molecules/form/InputLabel.svelte";
     import { onMount } from "svelte";
-    import SelectLabel from "../../molecules/form/SelectLabel.svelte";
+    import Select from "svelte-select";
     import FormGroup from "../../atoms/group/FormGroup.svelte";
-    import { Inertia } from "@inertiajs/inertia";
 
     export let processing = false;
+
     let errors;
     let components = [];
     let resources = [];
+
+    const itemId = "id";
+
     export let menuItem = {
         title: null,
         icon: "",
-        component_type: "",
-        resource: "0",
+        module: "",
+        resource: "",
     };
 
-    $: if (menuItem.component_type && components && components.length) {
-        const component = components.find(
-            (component) => component.name === menuItem.component_type
-        );
-
-        if (component && component.has_table) {
-            getResources(component.name);
-        }
-    }
-
-    onMount(() => getComponents());
+    onMount(() => {
+        getComponents();
+        if (menuItem.module) getResources();
+    });
 
     function getComponents() {
         axios
@@ -37,16 +33,33 @@
             .then((response) => (components = response.data));
     }
 
-    function getResources(component) {
-        axios
-            .get(route(`${component}.get-all`))
-            .then((response) => (resources = response.data));
-    }
-
-    function resetResource() {
+    /**
+     * Reset the resources array and the resource property of the
+     * menuItem object, and then fetch new resources.
+     *
+     * @returns {undefined}
+     */
+    function selectedModule() {
         resources = [];
-        menuItem.resource = "" + 0;
-        console.log(menuItem);
+        menuItem.resource = "";
+        getResources();
+    }
+    /**
+     * Fetch resources for the current module and store them in the
+     * resources array.
+     *
+     * @returns {undefined}
+     */
+    function getResources() {
+        // Make an HTTP GET request to the specified route, passing
+        // the current module's ID as a parameter
+        axios
+            .get(
+                route("components.resources", {
+                    module_id: menuItem.module.id,
+                })
+            )
+            .then((response) => (resources = response.data));
     }
 </script>
 
@@ -69,37 +82,28 @@
         />
 
         <FormGroup class="group">
-            <label for="">Componentes</label>
-            <select
-                name="resource"
-                id="resource"
-                class="p-3 rounded-md border"
-                bind:value={menuItem.component_type}
-                on:change={resetResource}
-            >
-                <option value="">Seleccione un componente</option>
-                {#each components as resource}
-                    <option value={resource.name}>{resource.label}</option>
-                {/each}
-            </select>
+            <label for="">Módulos</label>
+            <Select
+                {itemId}
+                items={components}
+                showChevron={true}
+                placeholder="--Seleccione un módulo--"
+                bind:value={menuItem.module}
+                on:change={selectedModule}
+            />
         </FormGroup>
 
         {#if resources.length > 0}
             <FormGroup class="group">
                 <label for="">Recurso</label>
-                <select
-                    name="resource"
-                    id="resource"
-                    class="p-3 rounded-md"
+                <Select
+                    items={resources}
+                    {itemId}
+                    label="title"
+                    showChevron={true}
+                    placeholder="--Seleccione un recurso--"
                     bind:value={menuItem.resource}
-                >
-                    <option value="0">Seleccione un recurso</option>
-                    {#each resources as resource}
-                        <option value={"" + resource.id}
-                            >{resource.title}</option
-                        >
-                    {/each}
-                </select>
+                />
             </FormGroup>
         {/if}
 

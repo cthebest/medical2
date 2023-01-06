@@ -26,6 +26,7 @@
         "@tinymce/tinymce-svelte": "^1.0.0",
         "moment": "^2.29.4",
         "svelte-click-outside": "^1.0.0",
-        "svelte-fa": "^3.0.3"
+        "svelte-fa": "^3.0.3",
+        "svelte-select": "^5.0.2"
     }
 }
