@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import img_header from "images/inicio/img_header.png";
+    import Footer from "./Footer.svelte";
     // Hola mundo
 
     let menuItems = [];
@@ -50,3 +51,5 @@
 <main class="flex mx-40 mt-5">
     <slot />
 </main>
+
+<Footer></Footer>
