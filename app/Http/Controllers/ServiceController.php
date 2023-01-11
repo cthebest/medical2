@@ -45,10 +45,10 @@ class ServiceController extends Controller
             'association' => $this->getAttributes($request)
         ]);
 
-        $article = (new Service())->fill($attributes->except('file'));
-        $article->save();
+        $service = (new Service())->fill($attributes->except('file'));
+        $service->save();
         $request->session()->flash('message', 'Servicio creado con éxito');
-        return redirect()->route('services.create');
+        return redirect()->route('services.edit', $service);
     }
 
 
@@ -103,5 +103,19 @@ class ServiceController extends Controller
 
         $request->session()->flash('message', 'Servicio actualizado con éxito');
         return redirect()->route('services.edit', $service->id);
+    }
+
+    /**
+     * Método que permite eliminar un solo artículo
+     */
+    public function destroy(Service $service)
+    {
+        if (!auth()->user()->can('delete_services')) {
+            abort(403);
+        }
+
+        $service->delete();
+        session()->flash('message', 'Artículo eliminado con éxito');
+        return redirect()->route('services.index');
     }
 }

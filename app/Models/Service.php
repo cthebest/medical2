@@ -18,7 +18,7 @@ class Service extends Model
         'association'
     ];
 
-    protected $appends = ['image_uri'];
+    protected $appends = ['image_uri', 'article_url'];
 
     public function getImageUriAttribute()
     {
@@ -30,5 +30,16 @@ class Service extends Model
     public function getAssociationAttribute($value)
     {
         return json_decode($value);
+    }
+
+    public function getArticleUrlAttribute()
+    {
+        if ($this->association) {
+            $resource = $this->association->resource;
+            $article = Article::where('id',$resource->id)->first();
+            return $article->url;
+        }
+
+        return '';
     }
 }

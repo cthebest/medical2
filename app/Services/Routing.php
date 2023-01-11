@@ -63,7 +63,16 @@ class Routing
 
     private function getMenuItem($paths): MenuItem|null
     {
-        return MenuItem::whereIn('path', $paths)->first();
+        $menuItem = null;
+        foreach ($paths as $key => $value) {
+
+            $menuItem = MenuItem::where('path', $value)->first();
+            if ($menuItem) {
+                break;
+            }
+        }
+
+        return $menuItem;
     }
 
 

@@ -9,9 +9,10 @@
     onMount(() => getServices());
 
     function getServices() {
-        axios
-            .get(route("services.getAll"))
-            .then((response) => (services = response.data));
+        axios.get(route("services.getAll")).then((response) => {
+            services = response.data;
+            console.log(services);
+        });
     }
 </script>
 
@@ -23,6 +24,7 @@
             <div class="bg-white rounded-lg p-8">
                 <img
                     src={service.image_uri}
+                    alt={service.alias}
                     class="rounded-full w-32 h-32 mx-auto object-cover bg-[#006699]"
                 />
                 <h3 class="text-lg font-medium mt-4 text-center">
@@ -32,8 +34,9 @@
                     {service.description}
                 </p>
                 <div class="flex justify-center">
-                    <button class="p-2 rounded-md bg-[#c7f768]"
-                        >Más información</button
+                    <a
+                        href={service.article_url}
+                        class="p-2 rounded-md bg-[#c7f768]">Más información</a
                     >
                 </div>
             </div>
