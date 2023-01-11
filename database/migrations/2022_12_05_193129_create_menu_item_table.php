@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
+            $table->unsignedInteger('order');
             $table->string('icon')->nullable();
             $table->string('path', 1024);
             $table->json('association'); //formado {module='name', resource='resource'}

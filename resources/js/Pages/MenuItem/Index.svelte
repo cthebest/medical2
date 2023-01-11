@@ -1,23 +1,20 @@
 <script>
-    import Table from "../../components/atoms/table/Table.svelte";
-    import Thead from "../../components/atoms/table/Thead.svelte";
-    import TBody from "../../components/atoms/table/TBody.svelte";
-    import TDataCell from "../../components/atoms/table/TDataCell.svelte";
+    import SortableList from "../../components/repository/SortableList.svelte";
     import { Inertia } from "@inertiajs/inertia";
-    import FormGroup from "../../components/atoms/group/FormGroup.svelte";
     import {
         component,
         request,
     } from "../../components/repository/request-stores";
     import ButtonPrimary from "../../components/atoms/buttons/ButtonPrimary.svelte";
-    import ButtonDanger from "../../components/atoms/buttons/ButtonDanger.svelte";
     import AdminLayout from "../../components/organism/layout/AdminLayout.svelte";
     import Panel from "../../components/atoms/panel/Panel.svelte";
     import { paginate, LightPaginationNav } from "svelte-paginate";
+    import MenuItem from "./MenuItem.svelte";
 
     export let menuItems; // Son todos los usuarios que se encuentran en la base de datos
-    let currentPage = menuItems.current_page;
 
+    let currentPage = menuItems.current_page;
+    let list = menuItems.data;
     export let dialog; // Es el modal que será mostrado al usuario
 
     $: if (dialog) {
@@ -30,13 +27,12 @@
         Inertia.get(route("menu-items.create"));
     }
 
-    function edit(menuItem) {
-        Inertia.get(
-            route("menu-items.edit", {
-                menu_item: menuItem,
-            })
-        );
-    }
+    const sortList = (ev) => {
+        list = ev.detail;
+        axios.put(route("update-order-list"), {
+            list: list,
+        });
+    };
 </script>
 
 <AdminLayout>
@@ -44,40 +40,16 @@
         <div class="py-2">
             <ButtonPrimary on:click={create}>Nuevo item de menú</ButtonPrimary>
         </div>
-        <Table>
-            <tr>
-                <Thead>Título</Thead>
-                <Thead>Ruta</Thead>
-                <Thead>Fecha de creación</Thead>
-                <Thead>Fecha de actualización</Thead>
-                <Thead>Acciones</Thead>
-            </tr>
-            <TBody>
-                {#each menuItems.data as menuItem}
-                    <tr>
-                        <TDataCell>{menuItem.title}</TDataCell>
-                        <TDataCell>{menuItem.path}</TDataCell>
-                        <TDataCell>{menuItem.created_at}</TDataCell>
-                        <TDataCell>{menuItem.updated_at}</TDataCell>
-                        <TDataCell>
-                            <FormGroup>
-                                <ButtonPrimary on:click={() => edit(menuItem)}
-                                    >Editar</ButtonPrimary
-                                >
-                                <ButtonDanger
-                                    on:click={() =>
-                                        Inertia.delete(
-                                            route("menu-items.destroy", {
-                                                menu_item: menuItem.id,
-                                            })
-                                        )}>Eliminar</ButtonDanger
-                                >
-                            </FormGroup>
-                        </TDataCell>
-                    </tr>
-                {/each}
-            </TBody>
-        </Table>
+        <div class="border grid grid-cols-5 py-4 px-2">
+            <div>Nombre</div>
+            <div>Link</div>
+            <div>Fecha de creación</div>
+            <div>Fecha de actualización</div>
+        </div>
+        <SortableList {list} key="order" on:sort={sortList} let:item let:index>
+            <MenuItem {item} {index} />
+        </SortableList>
+
         <div class="mt-4">
             <LightPaginationNav
                 totalItems={menuItems.total}

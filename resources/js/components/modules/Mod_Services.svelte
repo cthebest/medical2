@@ -2,46 +2,41 @@
     // Default theme
     import { Splide, SplideSlide } from "@splidejs/svelte-splide";
     import "@splidejs/svelte-splide/css";
+    import axios from "axios";
+    import { onMount } from "svelte";
+    export let services = [];
+
+    onMount(() => getServices());
+
+    function getServices() {
+        axios
+            .get(route("services.getAll"))
+            .then((response) => (services = response.data));
+    }
 </script>
 
-<div class="flex justify-center w-full">
-    <Splide
-        options={{
-            rewind: true,
-            width: 900,
-            gap: "1rem",
-            perPage: 3,
-        }}
+<div class="container mx-auto px-4 py-8">
+    <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center content-center"
     >
-        <SplideSlide>
-            <li class="h-64 w-60  flex flex-col items-center">
-                <div class="rounded-full  w-40 h-40 bg-[#006699]">
-                    <img src="" alt="" />
+        {#each services as service}
+            <div class="bg-white rounded-lg p-8">
+                <img
+                    src={service.image_uri}
+                    class="rounded-full w-32 h-32 mx-auto object-cover bg-[#006699]"
+                />
+                <h3 class="text-lg font-medium mt-4 text-center">
+                    {service.title}
+                </h3>
+                <p class="text-gray-700 mt-2 text-center">
+                    {service.description}
+                </p>
+                <div class="flex justify-center">
+                    <button class="p-2 rounded-md bg-[#c7f768]"
+                        >Más información</button
+                    >
                 </div>
-                <span class="text-center w-full text-[#006699] ">
-                    Evaluación y tratamiento de neurologia
-                </span>
-            </li>
-        </SplideSlide>
-        <SplideSlide>
-            <li class="h-64 w-60  flex flex-col items-center">
-                <div class="rounded-full  w-40 h-40 bg-[#006699]">
-                    <img src="" alt="" />
-                </div>
-                <span class="text-center w-full text-[#006699]">
-                    Estudios de encefalograma digital y mapeo cerebral
-                </span>
-            </li>
-        </SplideSlide>
-        <SplideSlide>
-            <li class="h-64 w-60  flex flex-col items-center">
-                <div class="rounded-full  w-40 h-40 bg-[#006699]">
-                    <img src="" alt="" />
-                </div>
-                <span class="text-center w-full text-[#006699]">
-                    Potenciales visuales y auditivos
-                </span>
-            </li>
-        </SplideSlide>
-    </Splide>
+            </div>
+        {/each}
+    </div>
 </div>

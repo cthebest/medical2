@@ -14,7 +14,8 @@ class MenuItem extends Model
         'title',
         'icon',
         'path',
-        'association'
+        'association',
+        'order'
     ];
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('alias');
+            $table->string('description', 120);
             $table->string('image');
             $table->json('association');
             $table->timestamps();

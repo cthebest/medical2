@@ -21,7 +21,7 @@ class MenuItemController extends Controller
 
     public function index()
     {
-        $menuItems = MenuItem::paginate(10);
+        $menuItems = MenuItem::orderBy('order', 'ASC')->paginate(10);
         return Inertia('MenuItem/Index', compact('menuItems'));
     }
 
@@ -31,18 +31,60 @@ class MenuItemController extends Controller
     }
 
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+        /**
+         * Validate the title is required and unique
+         */
         $request->validate([
             'title' => [
                 'required',
                 Rule::unique('menu_items', 'title')
             ]
         ]);
+
+        /**
+         * Get the attributes from the request
+         */
         $attributes = $this->getAttributes($request);
+
+        /**
+         * Get the last menu item in the table
+         */
+        $lastMenuItem = MenuItem::latest()->first();
+
+        /**
+         * Initialize an order variable
+         */
+        $order = 1;
+
+        /**
+         * Check if there is a last menu item and if exists, 
+         * add 1 to the last order
+         */
+        if ($lastMenuItem) {
+            $order = $lastMenuItem->order + 1;
+        }
+        /**
+         * Merge the attributes array with the new order value
+         */
+        $attributes = array_merge($attributes, ['order' => $order]);
+        /**
+         * Create a new menu item with the attributes
+         */
         MenuItem::create($attributes);
+        /**
+         * Show success message
+         */
         session()->flash('message', 'Ítem de menú creado con éxito');
     }
+
 
     public function edit(MenuItem $menuItem)
     {
@@ -106,5 +148,20 @@ class MenuItemController extends Controller
         $menuItem->delete();
         session()->flash('message', 'Ítem de menú eliminado con éxito');
         return redirect()->route('menu-items.index');
+    }
+
+
+    public function updateList(Request $request)
+    {
+        $list = collect($request->list)->map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'title' => $item['title'],
+                'path' => $item['path'],
+                'order' => $item['order'],
+                'association' => json_encode($item['association'])
+            ];
+        })->toArray();
+        MenuItem::upsert($list, 'id', ['order']);
     }
 }

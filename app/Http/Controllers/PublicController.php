@@ -8,6 +8,6 @@ class PublicController extends Controller
 {
     public function getMenuItems()
     {
-        return response()->json(MenuItem::all());
+        return response()->json(MenuItem::orderBy('order', 'ASC')->get());
     }
 }

@@ -161,6 +161,11 @@
                         icon={faBurger}
                         href="menu-items.index"
                     />
+                    <SidebarItem
+                        title={"Servicios"}
+                        icon={faBurger}
+                        href="services.index"
+                    />
                 </ul>
             {/if}
         </div>

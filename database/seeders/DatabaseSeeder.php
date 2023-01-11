@@ -139,9 +139,16 @@ class DatabaseSeeder extends Seeder
         $delete_articles = Permission::create(['name' => 'delete_articles']);
         $list_articles = Permission::create(['name' => 'list_articles']);
 
+        $create_service = Permission::create(['name' => 'create_services']);
+        $update_services = Permission::create(['name' => 'update_services']);
+        $delete_services = Permission::create(['name' => 'delete_services']);
+        $list_services = Permission::create(['name' => 'list_services']);
+
         $editor->syncPermissions([
             $create_article, $update_articles,
-            $delete_articles, $list_articles, $create_menu_item, $update_menu_item, $delete_menu_item, $list_menu_item
+            $delete_articles, $list_articles, $create_menu_item,
+            $update_menu_item, $delete_menu_item, $list_menu_item,
+            $create_service, $update_services, $delete_services, $list_services
         ]);
 
         $admin->syncPermissions([

@@ -11,6 +11,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,13 +90,15 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     ])->name('professionals');
 
     Route::get('articles/{article}/get-article', [ArticleController::class, 'getArticle'])->name('articles.get-article');
-
+    Route::put('menu-items/update-order-list', [MenuItemController::class, 'updateList'])->name('update-order-list');
+    Route::get('articles/getArticles', [ArticleController::class, 'getArticles'])->name('articles.getArticles');
     // Resources-----
     Route::resources([
         'users' => UserController::class,
         'articles' => ArticleController::class,
         'menu-items' => MenuItemController::class,
         'appointments' => AppointmentController::class,
+        'services' => ServiceController::class,
 
     ]);
 });

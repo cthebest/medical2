@@ -19,7 +19,7 @@ class Article extends Model
         'image'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'image_uri'];
 
 
     /**
@@ -38,11 +38,11 @@ class Article extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getUrlPhotoAttribute($value)
+    public function getImageUriAttribute()
     {
-        if ($value)
-            return Storage::url($value);
-        return $value;
+        if ($this->image)
+            return Storage::url($this->image);
+        return $this->image;
     }
 
     public function getUrlAttribute()

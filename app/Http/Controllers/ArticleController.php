@@ -6,6 +6,7 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -115,5 +116,10 @@ class ArticleController extends Controller
         $article->delete();
         session()->flash('message', 'Artículo eliminado con éxito');
         return redirect()->route('articles.index');
+    }
+
+    public function getArticles()
+    {
+        return response()->json(DB::table('articles')->select('id', 'title')->get());
     }
 }

@@ -18,7 +18,7 @@
         <div class="grid grid-cols-4 gap-4 w-full">
             {#each articles.data as article}
                 <a href={article.url}>
-                    <div class="shadow-md h-64">
+                    <div class="h-64">
                         {#if article.url_photo}
                             <img src={article.url_photo} alt="" />
                         {/if}
